@@ -1,0 +1,301 @@
+--은행계좌주식거래기록
+
+CREATE TABLE "AIS".bnk_accnt_stck_trd_log (
+	trd_id serial4 NOT NULL,
+	trd_stck_ticker varchar NOT NULL,
+	trd_stck_nm varchar NULL,
+	trd_stck_amount int4 NOT NULL,
+	trd_stck_sngl_pchs_cst float4 NOT NULL,
+	trd_stck_sngl_sell_cst float4 NOT NULL,
+	trd_stck_market varchar NOT NULL,
+	trd_ts timestamptz DEFAULT now() NOT NULL,
+	trd_bnk_accnt_no varchar NOT NULL,
+	CONSTRAINT bnk_accnt_stck_trd_log_pkey PRIMARY KEY (trd_id)
+);
+
+--글로벌지수
+
+CREATE TABLE "AIS".global_indices (
+	clct_timestamp timestamptz DEFAULT now() NOT NULL,
+	dollar numeric(7, 2) NULL,
+	euro numeric(7, 2) NULL,
+	yen numeric(7, 2) NULL,
+	pound numeric(7, 2) NULL,
+	us_interest numeric(7, 2) NULL,
+	europe_interest numeric(7, 2) NULL,
+	japan_interest numeric(7, 2) NULL,
+	england_interest numeric(7, 2) NULL,
+	korea_interest numeric(7, 2) NULL,
+	brent numeric(7, 2) NULL,
+	wti numeric(7, 2) NULL,
+	dubai numeric(7, 2) NULL,
+	gold numeric(7, 2) NULL,
+	silver numeric(7, 2) NULL,
+	rice numeric(7, 2) NULL,
+	wheat numeric(7, 2) NULL
+);
+
+--뉴스
+
+CREATE TABLE "AIS".news (
+	id int4 NULL,
+	lang varchar(2) NULL,
+	title varchar NULL,
+	bfr varchar NULL,
+	trnsltd varchar NULL,
+	score numeric(10, 7) NULL,
+	datetime varchar NULL,
+	"source" varchar NULL,
+	href varchar NULL,
+	CONSTRAINT news_un_1 UNIQUE (id)
+);
+
+--선택된 주식들
+
+CREATE TABLE "AIS".slctd_stcks (
+	stck_ticker varchar NOT NULL,
+	stck_nm varchar NOT NULL,
+	stck_mrkt varchar NOT NULL,
+	slctd_dt date NULL,
+	dslctd_dt date NULL
+);
+
+--주식시장 메타데이터
+
+CREATE TABLE "AIS".stck_mrkt_mtdt (
+	stck_mrkt_id int4 DEFAULT nextval('"AIS".stck_mrkt_info_stck_mrkt_id_seq'::regclass) NOT NULL,
+	stck_mrkt_nm varchar(8) NULL,
+	stck_mrkt_opn_time varchar(5) NOT NULL,
+	stck_mrkt_cls_time_kst varchar(5) NULL,
+	stck_mrkt_crrncy_unit varchar(4) NULL,
+	stck_mrkt_now_idx numeric(8, 2) NULL,
+	CONSTRAINT stck_mrkt_info_pk PRIMARY KEY (stck_mrkt_id)
+);
+
+-- 주식 메타데이터_KOSPI
+
+CREATE TABLE "AIS".stck_mtdt_kospi (
+	stck_id serial4 NOT NULL,
+	stck_ticker varchar NOT NULL,
+	stck_nm varchar NOT NULL,
+	stck_mrkt varchar NOT NULL,
+	net_income numeric(20, 2) NULL,
+	roe numeric(20, 2) NULL,
+	eps numeric(20, 2) NULL,
+	per numeric(20, 2) NULL,
+	pbr numeric(20, 2) NULL,
+	ocf numeric(20, 2) NULL,
+	icf numeric(20, 2) NULL,
+	fcf numeric(20, 2) NULL,
+	equity numeric(20, 2) NULL,
+	cap numeric(20, 2) NULL,
+	dividends numeric(20, 6) NULL,
+	std_dt date NULL,
+	fstrcntqtdt date NULL,
+	fstrcntqtnc numeric(20, 2) NULL,
+	scndrcntqtdt date NULL,
+	scndrcntqtnc numeric(20, 2) NULL,
+	trdrcntqtdt date NULL,
+	trdrcntqtnc numeric(20, 2) NULL,
+	fthrcntqtdt date NULL,
+	fthrcntqtnc numeric(20, 2) NULL,
+	CONSTRAINT stck_mtdt_kospi_pkey PRIMARY KEY (stck_id)
+);
+
+--주식메타데이터_NASDAQ
+
+CREATE TABLE "AIS".stck_mtdt_nasdaq (
+	stck_id serial4 NOT NULL,
+	stck_ticker varchar NOT NULL,
+	stck_nm varchar NOT NULL,
+	stck_mrkt varchar NOT NULL,
+	net_income numeric(20, 2) NULL,
+	roe numeric(20, 2) NULL,
+	eps numeric(20, 2) NULL,
+	per numeric(20, 2) NULL,
+	pbr numeric(20, 2) NULL,
+	ocf numeric(20, 2) NULL,
+	icf numeric(20, 2) NULL,
+	fcf numeric(20, 2) NULL,
+	equity numeric(20, 2) NULL,
+	cap numeric(20, 2) NULL,
+	dividends numeric(20, 6) NULL,
+	std_dt date NULL,
+	fstrcntqtdt date NULL,
+	fstrcntqtnc numeric(20, 2) NULL,
+	scndrcntqtdt date NULL,
+	scndrcntqtnc numeric(20, 2) NULL,
+	trdrcntqtdt date NULL,
+	trdrcntqtnc numeric(20, 2) NULL,
+	fthrcntqtdt date NULL,
+	fthrcntqtnc numeric(20, 2) NULL,
+	CONSTRAINT stck_mtdt_nasdaq_pkey PRIMARY KEY (stck_id)
+);
+
+--주식메타데이터_NYSE
+
+CREATE TABLE "AIS".stck_mtdt_nyse (
+	stck_id int4 DEFAULT nextval('"AIS".stck_mtdt_nyse_1_stck_id_seq'::regclass) NOT NULL,
+	stck_ticker varchar NOT NULL,
+	stck_nm varchar NOT NULL,
+	stck_mrkt varchar NOT NULL,
+	net_income numeric(20, 2) NULL,
+	roe numeric(20, 2) NULL,
+	eps numeric(20, 2) NULL,
+	per numeric(20, 2) NULL,
+	pbr numeric(20, 2) NULL,
+	ocf numeric(20, 2) NULL,
+	icf numeric(20, 2) NULL,
+	fcf numeric(20, 2) NULL,
+	equity numeric(20, 2) NULL,
+	cap numeric(20, 2) NULL,
+	dividends numeric(20, 6) NULL,
+	std_dt date NULL,
+	fstrcntqtdt date NULL,
+	fstrcntqtnc numeric(20, 2) NULL,
+	scndrcntqtdt date NULL,
+	scndrcntqtnc numeric(20, 2) NULL,
+	trdrcntqtdt date NULL,
+	trdrcntqtnc numeric(20, 2) NULL,
+	fthrcntqtdt date NULL,
+	fthrcntqtnc numeric(20, 2) NULL,
+	CONSTRAINT stck_mtdt_nyse_pkey PRIMARY KEY (stck_id)
+);
+
+--주식메타데이터_TSE
+
+CREATE TABLE "AIS".stck_mtdt_tse (
+	stck_id serial4 NOT NULL,
+	stck_ticker varchar NOT NULL,
+	stck_nm varchar NOT NULL,
+	stck_mrkt varchar NOT NULL,
+	net_income numeric(20, 2) NULL,
+	roe numeric(20, 2) NULL,
+	eps numeric(20, 2) NULL,
+	per numeric(20, 2) NULL,
+	pbr numeric(20, 2) NULL,
+	ocf numeric(20, 2) NULL,
+	icf numeric(20, 2) NULL,
+	fcf numeric(20, 2) NULL,
+	equity numeric(20, 2) NULL,
+	cap numeric(20, 2) NULL,
+	dividends numeric(20, 6) NULL,
+	std_dt date NULL,
+	fstrcntqtdt date NULL,
+	fstrcntqtnc numeric(20, 2) NULL,
+	scndrcntqtdt date NULL,
+	scndrcntqtnc numeric(20, 2) NULL,
+	trdrcntqtdt date NULL,
+	trdrcntqtnc numeric(20, 2) NULL,
+	fthrcntqtdt date NULL,
+	fthrcntqtnc numeric(20, 2) NULL,
+	CONSTRAINT stck_mtdt_tse_pkey PRIMARY KEY (stck_id)
+);
+
+--사용자금융정보
+
+CREATE TABLE "AIS".usr_fnc_stts (
+	userid serial4 NOT NULL,
+	usernm varchar NULL,
+	bnk_accnt_no varchar NOT NULL,
+	bnk_key varchar NULL,
+	bnk_blnce_won int4 NULL,
+	bnk_blnce_dollar float8 NULL,
+	trd_accnt_blnce_won int4 NULL,
+	trd_accnt_blnce_dollar float8 NULL,
+	trd_accnt_no varchar NULL,
+	trd_key varchar NULL,
+	CONSTRAINT usr_fnc_stts_pkey PRIMARY KEY (userid)
+);
+
+--뷰_KOSPI주식메타데이터
+
+CREATE OR REPLACE VIEW "AIS".view_kospi_stck_mtdt
+AS SELECT smk.stck_id,
+    smk.stck_ticker,
+    smk.stck_nm,
+    smk.stck_mrkt,
+    smk.roe,
+    smk.per,
+    smk.pbr,
+    (smk.ocf / (abs(smk.ocf) + abs(smk.icf) + abs(smk.fcf)))::numeric(16,2) AS ocfrt,
+    (smk.icf / (abs(smk.ocf) + abs(smk.icf) + abs(smk.fcf)))::numeric(16,2) AS icfrt,
+    (smk.fcf / (abs(smk.ocf) + abs(smk.icf) + abs(smk.fcf)))::numeric(16,2) AS fcfrt,
+    smk.std_dt,
+    smk.fstrcntqtnc - smk.scndrcntqtnc AS "1stdif",
+    smk.scndrcntqtnc - smk.trdrcntqtnc AS "2nddif",
+    smk.trdrcntqtnc - smk.fthrcntqtnc AS "3rddif"
+   FROM "AIS".stck_mtdt_kospi smk
+  WHERE smk.net_income IS NOT NULL AND smk.roe IS NOT NULL AND smk.per IS NOT NULL AND smk.pbr IS NOT NULL AND smk.ocf IS NOT NULL AND smk.icf IS NOT NULL AND smk.fcf IS NOT NULL AND smk.dividends IS NOT NULL AND smk.std_dt IS NOT NULL;
+
+--뷰_NASDAQ주식메타데이터
+
+CREATE OR REPLACE VIEW "AIS".view_nasdaq_stck_mtdt
+AS SELECT smn.stck_id,
+    smn.stck_ticker,
+    smn.stck_nm,
+    smn.stck_mrkt,
+    smn.roe,
+    smn.per,
+    smn.pbr,
+    (smn.ocf / (abs(smn.ocf) + abs(smn.icf) + abs(smn.fcf)))::numeric(16,2) AS ocfrt,
+    (smn.icf / (abs(smn.ocf) + abs(smn.icf) + abs(smn.fcf)))::numeric(16,2) AS icfrt,
+    (smn.fcf / (abs(smn.ocf) + abs(smn.icf) + abs(smn.fcf)))::numeric(16,2) AS fcfrt,
+    smn.std_dt,
+    smn.fstrcntqtnc - smn.scndrcntqtnc AS "1stdif",
+    smn.scndrcntqtnc - smn.trdrcntqtnc AS "2nddif",
+    smn.trdrcntqtnc - smn.fthrcntqtnc AS "3rddif"
+   FROM "AIS".stck_mtdt_nasdaq smn
+  WHERE smn.net_income IS NOT NULL AND smn.roe IS NOT NULL AND smn.per IS NOT NULL AND smn.pbr IS NOT NULL AND smn.ocf IS NOT NULL AND smn.icf IS NOT NULL AND smn.fcf IS NOT NULL AND smn.dividends IS NOT NULL AND smn.std_dt IS NOT NULL;
+
+--뷰_NYSE주식메타데이터
+
+CREATE OR REPLACE VIEW "AIS".view_nyse_stck_mtdt
+AS SELECT smn.stck_id,
+    smn.stck_ticker,
+    smn.stck_nm,
+    smn.stck_mrkt,
+    smn.roe,
+    smn.per,
+    smn.pbr,
+    (smn.ocf / (abs(smn.ocf) + abs(smn.icf) + abs(smn.fcf)))::numeric(16,2) AS ocfrt,
+    (smn.icf / (abs(smn.ocf) + abs(smn.icf) + abs(smn.fcf)))::numeric(16,2) AS icfrt,
+    (smn.fcf / (abs(smn.ocf) + abs(smn.icf) + abs(smn.fcf)))::numeric(16,2) AS fcfrt,
+    smn.std_dt,
+    smn.fstrcntqtnc - smn.scndrcntqtnc AS "1stdif",
+    smn.scndrcntqtnc - smn.trdrcntqtnc AS "2nddif",
+    smn.trdrcntqtnc - smn.fthrcntqtnc AS "3rddif"
+   FROM "AIS".stck_mtdt_nyse smn
+  WHERE smn.net_income IS NOT NULL AND smn.roe IS NOT NULL AND smn.per IS NOT NULL AND smn.pbr IS NOT NULL AND smn.ocf IS NOT NULL AND smn.icf IS NOT NULL AND smn.fcf IS NOT NULL AND smn.dividends IS NOT NULL AND smn.std_dt IS NOT NULL;
+
+--뷰_TSE주식메타데이터
+CREATE OR REPLACE VIEW "AIS".view_tse_stck_mtdt
+AS SELECT smt.stck_id,
+    smt.stck_ticker,
+    smt.stck_nm,
+    smt.stck_mrkt,
+    smt.roe,
+    smt.per,
+    smt.pbr,
+    (smt.ocf / (abs(smt.ocf) + abs(smt.icf) + abs(smt.fcf)))::numeric(16,2) AS ocfrt,
+    (smt.icf / (abs(smt.ocf) + abs(smt.icf) + abs(smt.fcf)))::numeric(16,2) AS icfrt,
+    (smt.fcf / (abs(smt.ocf) + abs(smt.icf) + abs(smt.fcf)))::numeric(16,2) AS fcfrt,
+    smt.std_dt,
+    smt.fstrcntqtnc - smt.scndrcntqtnc AS "1stdif",
+    smt.scndrcntqtnc - smt.trdrcntqtnc AS "2nddif",
+    smt.trdrcntqtnc - smt.fthrcntqtnc AS "3rddif"
+   FROM "AIS".stck_mtdt_tse smt
+  WHERE smt.net_income IS NOT NULL AND smt.roe IS NOT NULL AND smt.per IS NOT NULL AND smt.pbr IS NOT NULL AND smt.ocf IS NOT NULL AND smt.icf IS NOT NULL AND smt.fcf IS NOT NULL AND smt.dividends IS NOT NULL AND smt.std_dt IS NOT NULL;
+
+--일일_MARKET_TICK_견본 - 선정된 각 주식의 수치들을 각 테이블에 저장
+
+CREATE TABLE "SDB".daily_market_tick_template (
+	"date" date NULL,
+	"open" float4 NULL,
+	"close" float4 NULL,
+	high float4 NULL,
+	low float4 NULL,
+	volume int8 NULL,
+	dividends float4 NULL,
+	stocksplits float4 NULL
+);
